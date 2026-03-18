@@ -1,7 +1,16 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
+  Unique,
+} from 'typeorm';
 import { Feed } from './feed.entity';
 
 @Entity('feed_items')
+@Unique('UQ_feed_items_feed_id_link', ['feedId', 'link'])
 export class FeedItem {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
@@ -10,16 +19,16 @@ export class FeedItem {
   title!: string;
 
   @Column({ type: 'text', nullable: true })
-  description!: string;
+  description!: string | null;
 
   @Column()
   link!: string;
 
-  @Column({ nullable: true })
-  pubDate!: Date;
+  @Column({ type: 'timestamptz', nullable: true })
+  pubDate!: Date | null;
 
   @Column({ type: 'text', nullable: true })
-  content!: string;
+  content!: string | null;
 
   @ManyToOne(() => Feed, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'feedId' })

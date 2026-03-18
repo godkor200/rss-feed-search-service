@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
+import { FeedItem } from './feed-item.entity';
 
 export enum FeedType {
   RSS = 'RSS',
@@ -22,6 +30,9 @@ export class Feed {
 
   @Column({ default: true })
   isActive!: boolean;
+
+  @OneToMany(() => FeedItem, (feedItem) => feedItem.feed)
+  items!: FeedItem[];
 
   @CreateDateColumn()
   createdAt!: Date;
